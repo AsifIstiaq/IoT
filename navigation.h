@@ -1352,7 +1352,6 @@
 
 // #endif  // NAVIGATION_H
 
-
 #ifndef NAVIGATION_H
 #define NAVIGATION_H
 
@@ -1375,12 +1374,12 @@ enum RobotState : uint8_t {
   STATE_ARRIVED_HOME
 };
 
-unsigned long lastJunctionTime = 0;
 
 RobotState robotState = STATE_IDLE;
 
 Destination currentLoc = DEST_HOME;   // robot boots parked at Home
 Destination activeDest = DEST_NONE;
+
 
 const TurnDir *activePath = nullptr;
 uint8_t activePathLen = 0;
@@ -1392,6 +1391,7 @@ bool journeyIsReturn = false;   // true when retracing a PATH_FROM_* array
 bool markerLocked = false;
 unsigned long markerSeenAt = 0;
 unsigned long lastMarkerTime = 0;
+unsigned long lastJunctionTime = 0;
 
 // --- line-lost recovery state ----------
 bool recoveringLine = false;
@@ -1695,7 +1695,7 @@ inline void handleBranchJunction() {
     } else {
       Serial.println(F("Path says: STRAIGHT"));
       setMotors(LINE_START_BOOST_SPEED, LINE_START_BOOST_SPEED);
-      delay(350);
+      delay(250);
       stopMotors();
     }
   }
@@ -1703,6 +1703,7 @@ inline void handleBranchJunction() {
   previousLineError = 0;
   recoveringLine = false;
   recoveryPhase = 0;
+
   lastJunctionTime = millis();
 }
 
@@ -1720,17 +1721,13 @@ inline void handleArrival() {
     robotState = STATE_ARRIVED_HOME;
     Serial.println(F("Arrived Home. Auto-rotating 180° to face track..."));
     delay(500);
-    Serial.println("Calling gyroTurn...");
     gyroTurn('R', 180.0); 
-    Serial.println("gyroTurn returned.");
   } else {
     robotState = STATE_ARRIVED_TABLE;
     Serial.print(F("Arrived at ")); Serial.println(destName(currentLoc));
     Serial.println(F("Auto-rotating 180° to face home track..."));
     delay(500);
-    Serial.println("Calling gyroTurn...");
     gyroTurn('R', 180.0); 
-    Serial.println("gyroTurn returned.");
   }
 
   activeDest = DEST_NONE;
@@ -1740,7 +1737,6 @@ inline void handleArrival() {
   
   // Explicitly force motors to brake and sit perfectly still
   stopMotors();
-  Serial.println(stateName(robotState));
   Serial.println(F("System Idle and aligned. Awaiting next web command..."));
 }
 
@@ -1798,20 +1794,14 @@ inline void navigationStep() {
   markerLocked = false;
 
   // Branch Junction Check
-  // if (isBranchJunction()) {
-  //   handleBranchJunction();
-  //   printLineDebug(stateName(robotState));
-  //   return;
-  // }
-
   // Branch Junction Check (with cooldown)
-if (millis() - lastJunctionTime >= JUNCTION_COOLDOWN_MS) {
-    if (isBranchJunction()) {
-        handleBranchJunction();
-        printLineDebug(stateName(robotState));
-        return;
-    }
-}
+  if (millis() - lastJunctionTime >= JUNCTION_COOLDOWN_MS) {
+      if (isBranchJunction()) {
+          handleBranchJunction();
+          printLineDebug(stateName(robotState));
+          return;
+      }
+  }
 
   if (recoveringLine) {
     recoveringLine = false;
