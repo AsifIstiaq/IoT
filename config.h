@@ -48,7 +48,7 @@ const int IR_FAR_RIGHT = 4;
 const int ULTRASONIC_TRIG = 5;
 const int ULTRASONIC_ECHO = 18;   // through a resistor divider, 5V -> 3.3V
 
-const int OBSTACLE_STOP_CM = 15;   // stop + start avoidance maneuver
+const int OBSTACLE_STOP_CM = 20;   // stop + start avoidance maneuver
 const int OBSTACLE_SLOW_CM = 30;   // start easing off speed
 
 // ---------------------------------------------------------------------
@@ -56,10 +56,11 @@ const int OBSTACLE_SLOW_CM = 30;   // start easing off speed
 // ---------------------------------------------------------------------
 const int SERVO_PIN = 13;
 
+const int SERVO_LEFT_DEG   = 150;
 const int SERVO_CENTER_DEG = 90;
-const int SERVO_LEFT_DEG   = 170;
-const int SERVO_RIGHT_DEG  = 10;
-const unsigned long SERVO_SETTLE_MS = 300;
+const int SERVO_RIGHT_DEG  = 30;
+
+const int SERVO_SETTLE_MS = 600;
 
 // ---------------------------------------------------------------------
 // MPU6050 (I2C)
@@ -101,8 +102,8 @@ const int LINE_RECOVER_REVERSE = 230;
 const int LINE_BACKUP_SPEED           = 190;
 const int LINE_REACQUIRE_FORWARD_SPEED = 175;
 
-const int TURN_FAST_SPEED  = 200;
-const int TURN_SLOW_SPEED  = 120;
+const int TURN_FAST_SPEED  = 240;
+const int TURN_SLOW_SPEED  = 220;
 const int TURN_BRAKE_SPEED = 185;
 const unsigned long TURN_BRAKE_MS = 120;
 
