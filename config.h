@@ -48,8 +48,8 @@ const int IR_FAR_RIGHT = 4;
 const int ULTRASONIC_TRIG = 5;
 const int ULTRASONIC_ECHO = 18;   // through a resistor divider, 5V -> 3.3V
 
-const int OBSTACLE_STOP_CM = 20;   // stop + start avoidance maneuver
-const int OBSTACLE_SLOW_CM = 30;   // start easing off speed
+const int OBSTACLE_STOP_CM = 18;   // stop + start avoidance maneuver
+const int OBSTACLE_SLOW_CM = 35;   // start easing off speed
 
 // ---------------------------------------------------------------------
 // SG90 pan servo (obstacle scanning)
